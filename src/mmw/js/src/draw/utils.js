@@ -14,12 +14,15 @@ function drawPolygon(map, drawOpts) {
             var layer = e.layer,
                 shape = layer.toGeoJSON();
             clearEvents();
+            tool.disable();
+            console.log('created');
             defer.resolve(shape);
         },
         drawStop = function() {
             tool.disable();
             clearEvents();
             defer.reject();
+            console.log('stopped');
         };
 
     cancelDrawing(map);
