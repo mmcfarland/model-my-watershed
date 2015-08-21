@@ -1,9 +1,12 @@
 <table class="table custom-hover">
     <thead>
         <tr>
-            <th>Type</th>
-            <th class="text-right">Area (m<sup>2</sup>)</th>
-            <th class="text-right">Coverage (%)</th>
+          
+            <th class="sortable" data-sort-prop="type">Type
+              {% if sortedCol == 'type' %} <i class="fa fa-angle-{{sortDir}}"></i>{% endif %}
+            </th>
+            <th class="text-right sortable" data-sort-prop="area">Area (m<sup>2</sup>)</th>
+            <th class="text-right sortable" data-sort-prop="coverage">Coverage (%)</th>
         </tr>
     </thead>
     <tbody>

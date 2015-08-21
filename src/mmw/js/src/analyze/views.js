@@ -226,15 +226,46 @@ var TableRowView = Marionette.ItemView.extend({
         return {
             // Convert coverage to percentage for display.
             coveragePct: (this.model.get('coverage') * 100).toFixed(1),
-            area: this.model.get('area')
         };
     }
 });
 
 var TableView = Marionette.CompositeView.extend({
+    currentSort: null,
+
     childView: TableRowView,
     childViewContainer: 'tbody',
-    template: tableTmpl
+
+    events: {
+        'click .sortable': 'sortCollection'
+    },
+
+    collectionEvents: {
+//        'change': 'render'
+    },
+
+    template: tableTmpl,
+
+    templateHelpers: function() {
+        return {
+            sortCol: this.currentSort
+        }
+    },
+
+    sortCollection: function(e) {
+        var $col = $(e.target),
+            colName = $col.data('sort-prop'),
+            sortedModels;
+
+        if (this.currentSort === colName) {
+            sortedModels = this.collection.models.reverse();
+        } else {
+            sortedModels = this.collection.sortBy(colName);
+        }
+        
+        this.currentSort = colName;
+        this.collection.reset(sortedModels);
+    }
 });
 
 var ChartView = Marionette.ItemView.extend({
