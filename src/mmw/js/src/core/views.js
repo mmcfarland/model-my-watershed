@@ -217,7 +217,8 @@ var MapView = Marionette.ItemView.extend({
         this.baseLayers = _.mapObject(settings.get('base_layers'), function(layerData) {
             // Check to see if the google api service has been loaded 
             // before creating a google layer
-            if (google && layerData.googleType) {
+            var googleLoaded = (typeof google !== 'undefined');
+            if (googleLoaded && layerData.googleType) {
                 return new L.Google(layerData.googleType);
             } else {
                 return new L.TileLayer(layerData.url, {
