@@ -201,7 +201,8 @@ var TabContentView = Marionette.LayoutView.extend({
         );
 
         this.tableRegion.show(new TableView({
-            collection: dataCollection
+            collection: dataCollection,
+            columns: ['type', 'area', 'coverage']
         }));
 
         this.chartRegion.show(new ChartView({
@@ -231,9 +232,40 @@ var TableRowView = Marionette.ItemView.extend({
 });
 
 var TableView = Marionette.CompositeView.extend({
+    columns: null,
+    currentSort: null,
+
     childView: TableRowView,
     childViewContainer: 'tbody',
-    template: tableTmpl
+
+    events: {
+        'click .sortable': 'sortCollection'
+    },
+
+    template: tableTmpl,
+
+    templateHelpers: function() {
+        return {
+            sortCol: this.currentSort,
+            sortDir: 'down',
+            columns: this.columns
+        }
+    },
+
+    sortCollection: function(e) {
+        var $col = $(e.target),
+            colName = $col.data('sort-prop'),
+            sortedModels;
+
+        if (this.currentSort === colName) {
+            sortedModels = this.collection.models.reverse();
+        } else {
+            sortedModels = this.collection.sortBy(colName);
+        }
+        
+        this.currentSort = colName;
+        this.collection.reset(sortedModels);
+    }
 });
 
 var ChartView = Marionette.ItemView.extend({

@@ -2,9 +2,11 @@
 <table class="table custom-hover">
     <thead>
         <tr>
-            <th>Type</th>
-            <th class="text-right">Area (m<sup>2</sup>)</th>
-            <th class="text-right">Coverage (%)</th>
+            {% for column in columns %}          
+              <th class="sortable" data-sort-prop="{{ column }}">{{ column|capitalize }}
+                  {% if sortedCol == column %} <i class="fa fa-angle-{{sortDir}}"></i>{% endif %}
+              </th>
+            {% endfor %}
         </tr>
     </thead>
     <tbody>
